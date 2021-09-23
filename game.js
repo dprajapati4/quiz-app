@@ -35,3 +35,51 @@ let questions = [
     answer: 4,
 },
 ]
+
+//CONSTANTS
+const CORRECT_BONUS = 10;
+const MAX_QUESTIONS = 3;
+
+const startGame = () => {
+    questionCounter = 0;
+    score = 0;
+    avaliableQuestions = [...questions]
+    console.log(avaliableQuestions)
+    getNewQuestion();
+}
+
+const getNewQuestion = () => {
+    if(avaliableQuestions.length === 0 || questionCounter >= MAX_QUESTIONS){
+        // go to the end of game page
+        return window.location.assign("/end.html")
+    }
+    questionCounter++;
+
+    const questionIndex = Math.floor(Math.random() * avaliableQuestions.length);
+        currentQuestion = avaliableQuestions[questionIndex];
+        console.log('the cureent', currentQuestion)
+        question.innerText = currentQuestion.question;
+
+        choices.forEach(choice => {
+            const number = choice.dataset["number"]
+            choice.innerText = currentQuestion["choice" + number];
+        });
+
+        avaliableQuestions.splice(questionIndex, 1);
+
+        acceptingAnswer = true;
+};
+
+choices.forEach(choice => {
+    choice.addEventListener("click", e => {
+        if(!acceptingAnswer) return;
+
+        acceptingAnswer = false;
+        const selectedChoice = e.target;
+        const selectedAnswer = selectedChoice.dataset["number"];
+
+        getNewQuestion();
+    })
+})
+
+startGame();
