@@ -1,6 +1,5 @@
 const question = document.getElementById("question");
 const choices = Array.from(document.getElementsByClassName("choice-text"));
-console.log('the choices', choices);
 
 let currentQuestion = {};
 let acceptingAnswer = true;
@@ -44,7 +43,6 @@ const startGame = () => {
     questionCounter = 0;
     score = 0;
     avaliableQuestions = [...questions]
-    console.log(avaliableQuestions)
     getNewQuestion();
 }
 
@@ -57,7 +55,6 @@ const getNewQuestion = () => {
 
     const questionIndex = Math.floor(Math.random() * avaliableQuestions.length);
         currentQuestion = avaliableQuestions[questionIndex];
-        console.log('the cureent', currentQuestion)
         question.innerText = currentQuestion.question;
 
         choices.forEach(choice => {
@@ -78,7 +75,16 @@ choices.forEach(choice => {
         const selectedChoice = e.target;
         const selectedAnswer = selectedChoice.dataset["number"];
 
-        getNewQuestion();
+        const classToApply = selectedAnswer == currentQuestion.answer ? "correct" : "incorrect";
+
+        selectedChoice.parentElement.classList.add(classToApply);
+
+        setTimeout(() => {
+
+            selectedChoice.parentElement.classList.remove(classToApply);
+
+            getNewQuestion();
+        }, 1000)
     })
 })
 
